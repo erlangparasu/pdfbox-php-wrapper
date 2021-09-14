@@ -1,3 +1,5 @@
 vendor/
 .env
 env.php
+lib/.DS_Store
+.DS_Store
