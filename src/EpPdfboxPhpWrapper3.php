@@ -3,8 +3,11 @@
 namespace ErlangParasu\PdfboxPhpWrapper;
 
 use Exception;
+use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+
+/// Created by: Erlang Parasu 2021
 
 class EpPdfboxPhpWrapper3 {
 
@@ -13,6 +16,21 @@ class EpPdfboxPhpWrapper3 {
     public $source_paths = [];
 
     public $output_path = null;
+
+    private $config_timeout = 60;
+
+    public function setTimeout($timeoutInSeconds)
+    {
+        if (! is_int($timeoutInSeconds)) {
+            throw new RuntimeException('Error: Timeout must be an integer. Example: 60');
+        }
+
+        if ($timeoutInSeconds < 5) {
+            $timeoutInSeconds = 5;
+        }
+
+        $this->config_timeout = $timeoutInSeconds;
+    }
 
     public function __constructor()
     {
@@ -96,6 +114,7 @@ class EpPdfboxPhpWrapper3 {
         $words[] = $this->output_path;
 
         $process = new Process($words);
+        $process->setTimeout($this->config_timeout);
         $process->run();
 
         // executes after the command finishes
