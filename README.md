@@ -21,6 +21,34 @@ You can install the package via Composer:
 composer require erlangparasu/pdfbox-php-wrapper
 ```
 
+## Installation from GitHub
+
+To install the library from a specific commit on GitHub, you can add the following to your `composer.json` file:
+
+```json
+"require": {
+    "erlangparasu/pdfbox-php-wrapper": "dev-main"
+},
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/erlangparasu/pdfbox-php-wrapper.git"
+    }
+],
+"minimum-stability": "dev",
+"prefer-stable": true
+```
+
+Then, run `composer update`.
+
+To use a specific commit, add `#<commit-hash>` to the end of the version string. For example:
+
+```json
+"require": {
+    "erlangparasu/pdfbox-php-wrapper": "dev-main#<commit-hash>"
+}
+```
+
 ## Usage
 
 This library provides a simple, fluent interface. By default, it uses PDFBox v2.
