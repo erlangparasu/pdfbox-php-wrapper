@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 
 /// Created by: Erlang Parasu 2021
 
-class EpPdfboxPhpWrapper {
+class PdfboxV3 implements PdfboxInterface {
 
     public $jarfile_path;
 
@@ -49,7 +49,7 @@ class EpPdfboxPhpWrapper {
 
     public function __construct()
     {
-        $this->jarfile_path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'pdfbox'.DIRECTORY_SEPARATOR.'pdfbox-app-2.0.24.jar';
+        $this->jarfile_path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'pdfbox'.DIRECTORY_SEPARATOR.'pdfbox-app-3.0.0-alpha2.jar';
         $this->source_paths = [];
     }
 
@@ -115,16 +115,18 @@ class EpPdfboxPhpWrapper {
         $words[] = $this->java_path;
         $words[] = '-jar';
         $words[] = $this->jarfile_path;
-        $words[] = 'PDFMerger';
+        $words[] = 'merge';
 
         foreach ($this->source_paths as $i => $path) {
             if ($this->isPathValid($path)) {
+                $words[] = '-i';
                 $words[] = $path;
             } else {
                 throw new Exception('ERR_INVALID_SOURCE_PATH_'.$i);
             }
         }
 
+        $words[] = '-o';
         $words[] = $this->output_path;
 
         $process = new Process($words);

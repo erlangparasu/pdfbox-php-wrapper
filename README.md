@@ -5,6 +5,7 @@ A simple PHP wrapper for [Apache PDFBox](https://pdfbox.apache.org/) that allows
 ## Features
 
 *   Merge multiple PDF files into one.
+*   Supports PDFBox v2 and v3.
 
 ## Requirements
 
@@ -22,44 +23,31 @@ composer require erlangparasu/pdfbox-php-wrapper
 
 ## Usage
 
-Here is an example of how to merge two PDF files.
+This library provides a simple, fluent interface. By default, it uses PDFBox v2.
 
-First, ensure you have two PDF files you want to merge (e.g., `1.pdf` and `2.pdf`).
+### Basic Example (Merge PDFs)
 
 ```php
 <?php
 
-// 1. Include the Composer autoloader
 require __DIR__."/vendor/autoload.php";
 
-use ErlangParasu\PdfboxPhpWrapper\EpPdfboxPhpWrapper;
+use ErlangParasu\PdfboxPhpWrapper\Pdfbox;
 
-$file_pdf1 = 'path/to/your/1.pdf';
-$file_pdf2 = 'path/to/your/2.pdf';
-$file_pdf_output = 'path/to/your/merged-output.pdf';
-
-// 2. Check if source files exist
-if (!file_exists($file_pdf1) || !file_exists($file_pdf2)) {
-    echo "Error: Source PDF files not found.\n";
-    exit(1);
-}
+$file1 = 'path/to/your/1.pdf';
+$file2 = 'path/to/your/2.pdf';
+$outputFile = 'path/to/your/merged-output.pdf';
 
 try {
-    // 3. Initialize the wrapper
-    $pdfbox = new EpPdfboxPhpWrapper();
+    $pdfbox = new Pdfbox();
 
-    // 4. Add the source PDF files
-    $pdfbox->addSourcePath($file_pdf1);
-    $pdfbox->addSourcePath($file_pdf2);
-
-    // 5. Set the desired output path
-    $pdfbox->setOutputPath($file_pdf_output);
-
-    // 6. Call the merge method
-    $result = $pdfbox->merge();
+    $result = $pdfbox->addSourcePath($file1)
+                     ->addSourcePath($file2)
+                     ->setOutputPath($outputFile)
+                     ->merge();
 
     if ($result) {
-        echo "Success! Merged PDF created at: $file_pdf_output\n";
+        echo "Success! Merged PDF created at: $outputFile\n";
     } else {
         echo "Error: Merge operation failed.\n";
     }
@@ -70,30 +58,40 @@ try {
 }
 ```
 
-### Advanced Usage
+### Switching PDFBox Version
 
-#### Specifying the Java Path
+You can easily switch between PDFBox v2 and v3.
+
+```php
+$pdfbox = new Pdfbox();
+
+// Use PDFBox v3
+$pdfbox->useVersion3();
+
+// All subsequent calls will use the v3 engine
+$pdfbox->addSourcePath(...)
+       ->merge();
+
+// Switch back to v2 if needed
+$pdfbox->useVersion2();
+```
+
+### Specifying the Java Path
 
 If the `java` executable is not in your system's default PATH, you can specify its location using the `setJavaPath()` method.
 
 ```php
-// ...
-$pdfbox = new EpPdfboxPhpWrapper();
+$pdfbox = new Pdfbox();
 
 // Example for Linux/macOS
 $pdfbox->setJavaPath('/usr/bin/java');
 
 // Example for Windows
-// $pdfbox->setJavaPath('C:\Program Files\Java\jdk-11\bin\java.exe');
+// $pdfbox->setJavaPath('C:\\Program Files\\Java\\jdk-11\\bin\\java.exe');
 
-$pdfbox->addSourcePath(...);
-// ...
+$pdfbox->addSourcePath(...)
+       ->merge();
 ```
-
-### Notes
-
-*   The underlying PDFBox JAR included is version `2.0.24`.
-*   The wrapper uses `symfony/process` to execute the `java -jar` command. Ensure your PHP environment has permission to execute shell commands.
 
 ## License
 
