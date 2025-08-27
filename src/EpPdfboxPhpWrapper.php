@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 
 class EpPdfboxPhpWrapper {
 
-    const JARFILE_PATH = __DIR__.'/../lib/pdfbox/pdfbox-app-2.0.24.jar';
+    public $jarfile_path;
 
     public $source_paths = [];
 
@@ -32,8 +32,9 @@ class EpPdfboxPhpWrapper {
         $this->config_timeout = $timeoutInSeconds;
     }
 
-    public function __constructor()
+    public function __construct()
     {
+        $this->jarfile_path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'pdfbox'.DIRECTORY_SEPARATOR.'pdfbox-app-2.0.24.jar';
         $this->source_paths = [];
     }
 
@@ -98,7 +99,7 @@ class EpPdfboxPhpWrapper {
         $words = [];
         $words[] = 'java';
         $words[] = '-jar';
-        $words[] = self::JARFILE_PATH;
+        $words[] = $this->jarfile_path;
         $words[] = 'PDFMerger';
 
         foreach ($this->source_paths as $i => $path) {
