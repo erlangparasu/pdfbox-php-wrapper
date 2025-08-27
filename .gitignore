@@ -4,3 +4,4 @@ env.php
 lib/.DS_Store
 .DS_Store
 *.pdf
+.phpunit.result.cache
