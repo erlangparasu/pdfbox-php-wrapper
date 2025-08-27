@@ -70,6 +70,26 @@ try {
 }
 ```
 
+### Advanced Usage
+
+#### Specifying the Java Path
+
+If the `java` executable is not in your system's default PATH, you can specify its location using the `setJavaPath()` method.
+
+```php
+// ...
+$pdfbox = new EpPdfboxPhpWrapper();
+
+// Example for Linux/macOS
+$pdfbox->setJavaPath('/usr/bin/java');
+
+// Example for Windows
+// $pdfbox->setJavaPath('C:\Program Files\Java\jdk-11\bin\java.exe');
+
+$pdfbox->addSourcePath(...);
+// ...
+```
+
 ### Notes
 
 *   The underlying PDFBox JAR included is version `2.0.24`.

@@ -13,11 +13,26 @@ class EpPdfboxPhpWrapper {
 
     public $jarfile_path;
 
+    public $java_path = 'java';
+
     public $source_paths = [];
 
     public $output_path = null;
 
     private $config_timeout = 60;
+
+    public function setJavaPath($path)
+    {
+        if (is_string($path)) {
+            if (strlen($path) > 1) {
+                $this->java_path = $path;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public function setTimeout($timeoutInSeconds)
     {
@@ -97,7 +112,7 @@ class EpPdfboxPhpWrapper {
         }
 
         $words = [];
-        $words[] = 'java';
+        $words[] = $this->java_path;
         $words[] = '-jar';
         $words[] = $this->jarfile_path;
         $words[] = 'PDFMerger';
